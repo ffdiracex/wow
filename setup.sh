@@ -9,7 +9,7 @@ if [ -w "$(dirname "$LOG_FILE")" ] || sudo touch "$LOG_FILE" 2>/dev/null; then
     exec 2> >(tee -a "$LOG_FILE" >&2)
 fi
 
-# strftime('%Y-%m-%d %H:%M:%S)
+# strftime('%Y-%m-%d %H:%M:%S')
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$LOG_FILE" 2>/dev/null || true; }
 
 readonly SCRIPT_VERSION="1.0"
