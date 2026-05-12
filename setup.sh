@@ -1,16 +1,77 @@
 #!/bin/bash
 
-# Colors for better output
+set -euo pipefail
+IFS=$'\n\t'
+
+LOG_FILE="/var/log/azerothcore-setup.log"
+if [ -w "$(dirname "$LOG_FILE")" ] || sudo touch "$LOG_FILE" 2>/dev/null; then
+    exec 1> >(tee -a "$LOG_FILE")
+    exec 2> >(tee -a "$LOG_FILE" >&2)
+fi
+
+# strftime('%Y-%m-%d %H:%M:%S)
+log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$LOG_FILE" 2>/dev/null || true; }
+
+readonly SCRIPT_VERSION="1.0"
+readonly REQUIRED_DISK_SPACE_GB=20  #require at least 20 Gigs, so we have some space to work with
+readonly AUTHOR="ffdiracex"
+readonly REPO="https://github.com/ffdiracex/wow.git"
+
+# some coloring to make output more readable and pleasent
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+
 print_status() { echo -e "${BLUE}[INFO]${NC} $1"; }
 print_success() { echo -e "${GREEN}[OK]${NC} $1"; }
 print_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 print_warning() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+
+pre_flight_checks() {
+    # make sure $USER has enough disk space
+    local available_space=$(df --output=avail / | tail -1)
+    local required_space=$((REQUIRED_DISK_SPACE_GB * 1024 * 1024))
+
+    if [[ $available_space -lt $required_space ]]; then
+        print_error "Insufficient disk space. Need at least ${REQUIRED_DISK_SPACE_GB}GB"
+        exit 1
+    fi
+
+
+    #Check memory
+    local total_mem=$(free -g | awk '/^Mem:/{print $2}')
+    if [[ $total_mem -lt 3 ]]; then
+        print_warning "Less than 3GB of RAM detected, performance may be affected."
+    fi
+
+    #check CPU cores
+    local cpu_cores=$(nproc)
+    print_status "Detected ${cpu_cores} CPU cores, ${total_mem}GB RAM"
+
+}
+
+#cleanup function, trigger at SIGINT / CTRL+C
+cleanup() {
+    local exit_code=$?
+    if [[ $exit_code -ne 0 ]]; then
+        print_error "Script failed with exit code $exit_code"
+        log "ERROR: Script failed at line ${BASH_LINENO[0]}"
+
+        #Rollback operation
+        if [[ -f /tmp/docker-compose.pid ]] && [[ -f "azerothcore-wotlk/docker-compose.yml" ]]; then
+            (cd azerothcore-wotlk && docker compose down &>/dev/null) || true
+        fi
+    fi
+    exit $exit_code
+}
+
+trap cleanup EXIT INT TERM
+
+
+
 
 function ask_user() {
     read -p "$(echo -e ${YELLOW}"$1 (y/n): "${NC})" choice
@@ -19,6 +80,9 @@ function ask_user() {
         * ) return 1;;
     esac
 }
+
+#run checks
+pre_flight_checks
 
 # Check if running on Arch
 if ! grep -qi "arch" /etc/os-release; then
