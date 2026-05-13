@@ -4,9 +4,9 @@
 # [![Platform](https://img.shields.io/badge/platform-Arch%20Linux-blue.svg)](https://archlinux.org/)
 # [![Docker](https://img.shields.io/badge/docker-required-blue.svg)](https://www.docker.com/)
 
-# A complete setup for running a World of Warcraft 3.3.5a private server using AzerothCore 
-# with the Playerbots module on Arch Linux. This setup uses Docker containers and includes 
-# comprehensive management scripts.
+ A complete setup for running a World of Warcraft 3.3.5a private server using AzerothCore 
+ with the Playerbots module on Arch Linux. This setup uses Docker containers and includes 
+ comprehensive management scripts.
 
 
 # CREDITS
@@ -49,9 +49,7 @@ chmod +x *.sh
    5. Import required SQL files
    6. Create configuration directories
 
-# =============================================================================
 # SCRIPTS REFERENCE
-# =============================================================================
 # setup.sh           - Initial installation and configuration
 # start_stop_acore.sh           - Start the server, or stop the server IF running. it will automatically determine.
 # update.sh          - Update AzerothCore and modules
@@ -95,9 +93,7 @@ docker logs <ac-*> // select what endpoint you want to log, is it the ac-worldse
 sudo chown -R 1000:1000 wotlk
 This fixes ownership of configuration directories and removes stale PID files.
 
-# =============================================================================
 # CLIENT CONFIGURATION
-# =============================================================================
 
 # On Your Windows Machine:
    1. Locate your WoW 3.3.5a client folder
