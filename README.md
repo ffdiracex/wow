@@ -1,8 +1,8 @@
 # WoW 3.3.5a AzerothCore Server with Playerbots
 
-# [![License](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.html)
-# [![Platform](https://img.shields.io/badge/platform-Arch%20Linux-blue.svg)](https://archlinux.org/)
-# [![Docker](https://img.shields.io/badge/docker-required-blue.svg)](https://www.docker.com/)
+ [![License](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.html)
+ [![Platform](https://img.shields.io/badge/platform-Arch%20Linux-blue.svg)](https://archlinux.org/)
+ [![Docker](https://img.shields.io/badge/docker-required-blue.svg)](https://www.docker.com/)
 
  A complete setup for running a World of Warcraft 3.3.5a private server using AzerothCore 
  with the Playerbots module on Arch Linux. This setup uses Docker containers and includes 
@@ -186,7 +186,6 @@ docker restart ac-worldserver
 
 # 
 # TROUBLESHOOTING
-# =============================================================================
 
  Permission Denied on Docker Socket
  Error: permission denied while trying to connect to the Docker daemon socket
