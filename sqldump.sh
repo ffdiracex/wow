@@ -197,7 +197,7 @@ function ask_user() {
     fi
 }
 
-# Parse command line arguments
+# parse the argv[] (command line arguments)
 case "${1:-}" in
     -b|--backup)
         create_backup
