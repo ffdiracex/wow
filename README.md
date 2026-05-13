@@ -8,9 +8,9 @@
 # with the Playerbots module on Arch Linux. This setup uses Docker containers and includes 
 # comprehensive management scripts.
 
-# =============================================================================
+
 # CREDITS
-# =============================================================================
+
 # This project uses:
 # - AzerothCore - The open-source World of Warcraft server core. 
 #   Copyright (c) AzerothCore developers. Licensed under AGPLv3.
@@ -21,9 +21,9 @@
 # This repository contains only management scripts. The AzerothCore server code 
 # is downloaded separately and remains under its original license.
 
-# =============================================================================
+# 
 # PREREQUISITES
-# =============================================================================
+# 
 # - Arch Linux (other distributions may work with modifications)
 # - Docker and Docker Compose
 # - Git
@@ -31,9 +31,9 @@
 # - 30GB free disk space
 # - WoW 3.3.5a client on a separate Windows machine (or Wine)
 
-# =============================================================================
+# 
 # QUICK START
-# =============================================================================
+# 
 # Clone this repository and run the setup script:
 
 git clone https://github.com/YOUR_USERNAME/wow.git
