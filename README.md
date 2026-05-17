@@ -37,11 +37,14 @@ is downloaded separately and remains under its original license.
  Clone this repository and run the setup script:
 
 git clone https://github.com/ffdiracex/wow.git
+
 cd wow
+
 chmod +x *.sh
+
 ./setup.sh
 
-# The setup script will:
+----The setup script will:
    1. Install Docker and dependencies
   2. Clone AzerothCore Playerbots branch
    3. Clone the Playerbots module
@@ -49,21 +52,21 @@ chmod +x *.sh
    5. Import required SQL files
    6. Create configuration directories
 
-# SCRIPTS REFERENCE
-# setup.sh           - Initial installation and configuration
-# start_stop_acore.sh           - Start the server, or stop the server IF running. it will automatically determine.
-# update.sh          - Update AzerothCore and modules
-# sqldump.sh         - Backup or restore databases
+SCRIPTS REFERENCE
+- setup.sh           - Initial installation and configuration
+- start_stop_acore.sh           - Start the server, or stop the server IF running. it will automatically determine.
+- update.sh          - Update AzerothCore and modules
+- sqldump.sh         - Backup or restore databases
 
 # SERVER MANAGEMENT
 
 Starting the Server
 ./start_stop_acore.sh
 
-# Stopping the Server
+- Stopping the Server
 ./start_stop_acore.sh
 
-# Creating a GM Account
+- Creating a GM Account
  After starting the server, attach to the worldserver console:
 docker attach ac-worldserver
 
@@ -71,31 +74,31 @@ docker attach ac-worldserver
 account create YourUsername YourPassword
 account set gmlevel YourUsername 3 -1
 
-# Viewing Logs
+- Viewing Logs
 docker logs <ac-*> // select what endpoint you want to log, is it the ac-worldserver? specify please
 
-# Backing Up Databases
+- Backing Up Databases
 ./sqldump.sh --backup                //Create a backup
 ./sqldump.sh --list                  //List available backups
 ./sqldump.sh --restore 2026-01-15   // Restore from a backup (YYYY-MM-DD format)
 
-# Updating the Server
+- Updating the Server
 ./update.sh
-# This will:
+- This will:
    - Prompt for a database backup
    - Stop running containers
    - Pull latest code from both repositories
    - Rebuild containers
    - Re-import required SQL files
 
-# Fixing Permission Issues
+- Fixing Permission Issues
 
 sudo chown -R 1000:1000 wotlk
 This fixes ownership of configuration directories and removes stale PID files.
 
-# CLIENT CONFIGURATION
+- CLIENT CONFIGURATION
 
-# On Your Windows Machine:
+- On Your Windows Machine:
    1. Locate your WoW 3.3.5a client folder
    2. Navigate to Data\enUS\ (or your language folder)
    3. Open realmlist.wtf in Notepad
@@ -103,22 +106,22 @@ This fixes ownership of configuration directories and removes stale PID files.
 set realmlist YOUR_SERVER_IP // 192.168.xxx.xxx or 10.0.xxx.xxx or 172.xxx.xxx.xxx
    5. Save and launch Wow.exe (not the launcher)
 
-# Finding Your Server IP (from Arch server):
+- Finding Your Server IP (from Arch server):
 hostname -I | awk '{print $1}' OR  ip addr show, and look for wlp2s0 (Wi-Fi) or enp2s0 (ethernet)
 
 
 #DATABASE ACCESS
 
-# Connecting to MySQL:
+- Connecting to MySQL:
 docker exec -it ac-database mysql -uroot -ppassword
 
-# Key Database Tables:
+- Key Database Tables:
    acore_auth        - Account management (account, account_access, realmlist)
    acore_characters  - Character data (characters, character_inventory, character_spell)
   acore_world       - Game content (creature_template, item_template, quest_template)
    acore_playerbots  - Bot data (playerbots_* tables)
 
-# Useful Queries:
+- Useful Queries:
 
 # List all accounts with GM levels:
 docker exec -it ac-database mysql -uroot -ppassword -e "
