@@ -9,9 +9,9 @@
  comprehensive management scripts.
 
 
-# CREDITS
+CREDITS
 
-# This project uses:
+ This project uses:
 - AzerothCore - The open-source World of Warcraft server core. 
   Copyright (c) AzerothCore developers. Licensed under AGPLv3.
 - Playerbots Module - Created by liyunfan1223 and contributors, based on the 
@@ -22,7 +22,7 @@ This repository contains only management scripts. The AzerothCore server code
 is downloaded separately and remains under its original license.
 
 
-# PREREQUISITES
+ PREREQUISITES
  
  - Arch Linux (other distributions may work with modifications)
  - Docker and Docker Compose
@@ -32,7 +32,7 @@ is downloaded separately and remains under its original license.
 - WoW 3.3.5a client on a separate Windows machine (or Wine)
 
  
-# QUICK START
+ QUICK START
  
  Clone this repository and run the setup script:
 
@@ -58,7 +58,7 @@ SCRIPTS REFERENCE
 - update.sh          - Update AzerothCore and modules
 - sqldump.sh         - Backup or restore databases
 
-# SERVER MANAGEMENT
+SERVER MANAGEMENT
 
 Starting the Server
 ./start_stop_acore.sh
@@ -123,31 +123,31 @@ docker exec -it ac-database mysql -uroot -ppassword
 
 - Useful Queries:
 
-# List all accounts with GM levels:
+ List all accounts with GM levels:
 docker exec -it ac-database mysql -uroot -ppassword -e "
 SELECT a.id, a.username, a.email, aa.gmlevel
 FROM acore_auth.account a
 LEFT JOIN acore_auth.account_access aa ON a.id = aa.id;"
 
-# Update server address for client connections:
+Update server address for client connections:
 docker exec -it ac-database mysql -uroot -ppassword -e "
 UPDATE acore_auth.realmlist SET address = '192.168.1.100' WHERE id = 1;"
 
-# Check online players:
+ Check online players:
 docker exec -it ac-database mysql -uroot -ppassword -e "
 SELECT username FROM acore_auth.account WHERE online = 1;"
 
 
-# PLAYERBOTS COMMANDS
+ PLAYERBOTS COMMANDS
 
-# Once logged into the game as a GM, use these commands:
+Once logged into the game as a GM, use these commands:
    .playerbot bot add *          - Add all your characters as bots
    .playerbot bot add Name       - Add a specific character as a bot
    .playerbot bot remove Name    - Remove a bot
    .playerbot bot logout         - Log out all bots
   .playerbot rb status          - Show random bot status
 
-# Bot Configuration:
+ Bot Configuration:
  Edit wotlk/etc/modules/playerbots.conf to adjust bot behavior:
 
    AiPlayerbot.RandomBotAutologin = 1
@@ -155,10 +155,10 @@ SELECT username FROM acore_auth.account WHERE online = 1;"
    AiPlayerbot.MaxRandomBots = 1000
    AiPlayerbot.EnableDebugLog = 0
 
-# After editing, restart the worldserver:
+After editing, restart the worldserver:
 docker restart ac-worldserver
 
-# GM COMMANDS
+GM COMMANDS
 
 
  .levelup #           - Level up character (level 2)
