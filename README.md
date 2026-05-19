@@ -55,7 +55,7 @@ chmod +x *.sh
    6. Create configuration directories
 
 SCRIPTS REFERENCE
-- setup.sh           - Initial installation and configuration
+- _setup.sh           - Initial installation and configuration
 - start_stop_acore.sh           - Start the server, or stop the server IF running. it will automatically determine.
 - update.sh          - Update AzerothCore and modules
 - sqldump.sh         - Backup or restore databases
@@ -88,7 +88,7 @@ docker logs <ac-*> // select what endpoint you want to log, is it the ac-worldse
 ```
 
 - Updating the Server
-./update.sh
+``` ./update.sh ```
 - This will:
    - Prompt for a database backup
    - Stop running containers
@@ -97,8 +97,9 @@ docker logs <ac-*> // select what endpoint you want to log, is it the ac-worldse
    - Re-import required SQL files
 
 - Fixing Permission Issues
-
+```
 sudo chown -R 1000:1000 wotlk
+```
 This fixes ownership of configuration directories and removes stale PID files.
 
 - CLIENT CONFIGURATION
@@ -112,13 +113,15 @@ set realmlist YOUR_SERVER_IP // 192.168.xxx.xxx or 10.0.xxx.xxx or 172.xxx.xxx.x
    5. Save and launch Wow.exe (not the launcher)
 
 - Finding Your Server IP (from Arch server):
-hostname -I | awk '{print $1}' OR  ip addr show, and look for wlp2s0 (Wi-Fi) or enp2s0 (ethernet)
-
+- 
+``` hostname -I | awk '{print $1}' ``` 
+   OR
+```ip addr show ``` and look for wlp2s0 (Wi-Fi) or enp2s0 (ethernet)
 
 DATABASE ACCESS
 
 - Connecting to MySQL:
-docker exec -it ac-database mysql -uroot -ppassword
+``` docker exec -it ac-database mysql -uroot -ppassword ```
 
 - Key Database Tables:
    acore_auth        - Account management (account, account_access, realmlist)
@@ -129,42 +132,49 @@ docker exec -it ac-database mysql -uroot -ppassword
 - Useful Queries:
 
  List all accounts with GM levels:
+ ```
 docker exec -it ac-database mysql -uroot -ppassword -e "
 SELECT a.id, a.username, a.email, aa.gmlevel
 FROM acore_auth.account a
 LEFT JOIN acore_auth.account_access aa ON a.id = aa.id;"
+```
 
 Update server address for client connections:
+```
 docker exec -it ac-database mysql -uroot -ppassword -e "
 UPDATE acore_auth.realmlist SET address = '192.168.1.100' WHERE id = 1;"
+```
 
  Check online players:
+```
 docker exec -it ac-database mysql -uroot -ppassword -e "
 SELECT username FROM acore_auth.account WHERE online = 1;"
-
+```
 
  PLAYERBOTS COMMANDS
 
 Once logged into the game as a GM, use these commands:
-   .playerbot bot add *          - Add all your characters as bots
-   .playerbot bot add Name       - Add a specific character as a bot
-   .playerbot bot remove Name    - Remove a bot
-   .playerbot bot logout         - Log out all bots
-  .playerbot rb status          - Show random bot status
+```
+   .playerbot bot add *          # Add all your characters as bots
+   .playerbot bot add Name       # Add a specific character as a bot
+   .playerbot bot remove Name    # Remove a bot
+   .playerbot bot logout         # Log out all bots
+  .playerbot rb status          # Show random bot status
+```
 
  Bot Configuration:
  Edit wotlk/etc/modules/playerbots.conf to adjust bot behavior:
-
+```
    AiPlayerbot.RandomBotAutologin = 1
    AiPlayerbot.MinRandomBots = 500
    AiPlayerbot.MaxRandomBots = 1000
    AiPlayerbot.EnableDebugLog = 0
-
+```
 After editing, restart the worldserver:
 docker restart ac-worldserver
 
+```
 GM COMMANDS
-
 
  .levelup            - Level up character (level 2)
  .additem  [ID]       - Add item to character (level 2)
@@ -177,20 +187,22 @@ GM COMMANDS
 
  For a complete list, type .help in the worldserver console or in-game.
 
+```
+```
  DIRECTORY STRUCTURE
  ~/wow/
- ├── azerothcore-wotlk/       AzerothCore source (not tracked by git)
- ├── wotlk/                   Configuration files
- │   └── etc/modules/         Module configs
+ ├── azerothcore-wotlk/      # AzerothCore source (not tracked by git)
+ ├── wotlk/                   #Configuration files
+ │   └── etc/modules/         #Module configs
  ├── src/
- │   └── .env                 Environment variables (not tracked)
- ├── sql_dumps/               Database backups //not there by default, is created upon running sqldump.sh
- ├── setup.sh                 Installation script
- ├── start_stop_acore.sh      Start server /  Stop server
- ├── update.sh                Update server
- ├── sqldump.sh               Backup/restore
- └── README.md                This file
-
+ │   └── .env                 #Environment variables (not tracked)
+ ├── sql_dumps/               #Database backups //not there by default, is created upon running sqldump.sh
+ ├── setup.sh                 #Installation script
+ ├── start_stop_acore.sh      #Start server /  Stop server
+ ├── update.sh                #Update server
+ ├── sqldump.sh               #Backup/restore
+ └── README.md                #This file
+```
 
  TROUBLESHOOTING
 
