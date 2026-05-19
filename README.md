@@ -65,24 +65,27 @@ SERVER MANAGEMENT
 Starting the Server
 ./start_stop_acore.sh
 ```
-- Stopping the Server
+
+```
+# Stopping the Server
 ./start_stop_acore.sh
 
-- Creating a GM Account
+# Creating a GM Account
  After starting the server, attach to the worldserver console:
 docker attach ac-worldserver
 
- At the AC> prompt:
+# At the AC> prompt:
 account create YourUsername YourPassword
 account set gmlevel YourUsername 3 -1
 
-- Viewing Logs
+# Viewing Logs
 docker logs <ac-*> // select what endpoint you want to log, is it the ac-worldserver? specify please
 
-- Backing Up Databases
+# Backing Up Databases
 ./sqldump.sh --backup                //Create a backup
 ./sqldump.sh --list                  //List available backups
 ./sqldump.sh --restore 2026-01-15   // Restore from a backup (YYYY-MM-DD format)
+```
 
 - Updating the Server
 ./update.sh
