@@ -202,7 +202,9 @@ cd azerothcore-wotlk && docker compose down && docker compose up -d
 
  Missing charsections_dbc Table
  Error: Table 'acore_world.charsections_dbc' doesn't exist
+
 cd azerothcore-wotlk/modules/mod-playerbots
+
 wget https://raw.githubusercontent.com/ZhengPeiRu21/mod-playerbots/AzerothCore/sql/world/world_charsections_dbc.sql
 docker exec -i ac-database mysql -uroot -ppassword acore_world < world_charsections_dbc.sql
 docker restart ac-worldserver
@@ -283,7 +285,7 @@ sudo rm -rf /var/lib/docker
  Storage     | 30GB       | 50GB+
  Network     | 100Mbps    | Gigabit
 
-# LICENSE
+ LICENSE
  The scripts in this repository are provided under the MIT License. 
  AzerothCore itself is licensed under AGPLv3. 
  The WoW client is property of Blizzard Entertainment and is not included.
