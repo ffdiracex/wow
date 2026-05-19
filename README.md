@@ -110,7 +110,7 @@ set realmlist YOUR_SERVER_IP // 192.168.xxx.xxx or 10.0.xxx.xxx or 172.xxx.xxx.x
 hostname -I | awk '{print $1}' OR  ip addr show, and look for wlp2s0 (Wi-Fi) or enp2s0 (ethernet)
 
 
-#DATABASE ACCESS
+DATABASE ACCESS
 
 - Connecting to MySQL:
 docker exec -it ac-database mysql -uroot -ppassword
@@ -161,34 +161,33 @@ docker restart ac-worldserver
 GM COMMANDS
 
 
- .levelup #           - Level up character (level 2)
- .additem # [#]       - Add item to character (level 2)
- .learn #             - Learn a spell (level 2)
- .tele #              - Teleport to location (level 1)
+ .levelup            - Level up character (level 2)
+ .additem  [ID]       - Add item to character (level 2)
+ .learn              - Learn a spell (level 2)
+ .tele LOCATION              - Teleport to location (level 1)
  .summon $name        - Summon a player (level 1)
  .kick $name          - Kick a player (level 1)
  .announce $msg       - Broadcast message (level 2)
  .save                - Save character data (level 0)
 
-# For a complete list, type .help in the worldserver console or in-game.
+ For a complete list, type .help in the worldserver console or in-game.
 
-# DIRECTORY STRUCTURE
+ DIRECTORY STRUCTURE
  ~/wow/
- ├── azerothcore-wotlk/      # AzerothCore source (not tracked by git)
- ├── wotlk/                  # Configuration files
- │   └── etc/modules/        # Module configs
+ ├── azerothcore-wotlk/       AzerothCore source (not tracked by git)
+ ├── wotlk/                   Configuration files
+ │   └── etc/modules/         Module configs
  ├── src/
- │   └── .env                # Environment variables (not tracked)
- ├── sql_dumps/              # Database backups //not there by default, is created upon running sqldump.sh
- ├── setup.sh                # Installation script
- ├── start_stop_acore.sh     # Start server /  Stop server
- ├── status.sh               # Check status
- ├── update.sh               # Update server
- ├── sqldump.sh              # Backup/restore
- └── README.md               # This file
+ │   └── .env                 Environment variables (not tracked)
+ ├── sql_dumps/               Database backups //not there by default, is created upon running sqldump.sh
+ ├── setup.sh                 Installation script
+ ├── start_stop_acore.sh      Start server /  Stop server
+ ├── update.sh                Update server
+ ├── sqldump.sh               Backup/restore
+ └── README.md                This file
 
-# 
-# TROUBLESHOOTING
+
+ TROUBLESHOOTING
 
  Permission Denied on Docker Socket
  Error: permission denied while trying to connect to the Docker daemon socket
@@ -247,37 +246,37 @@ echo "azerothcore-wotlk/" >> .gitignore
 git add .gitignore
 git commit -m "Ignore AzerothCore directory"
 
-# NETWORK CONFIGURATION
+ NETWORK CONFIGURATION
 
-# Local Network Only (LAN)
-# No port forwarding required. Use the server's local IP from ./status.sh.
+ Local Network Only (LAN)
+No port forwarding required. Use the server's local IP from ./status.sh.
 
-# Remote Access (Internet) - Method 1: Tailscale VPN (Recommended)
+ Remote Access (Internet) - Method 1: Tailscale VPN (Recommended)
 sudo pacman -S tailscale
 sudo systemctl enable tailscaled --now
 sudo tailscale up
-# On Windows client - install Tailscale and log in
-# Use the Tailscale IP (100.x.x.x) in realmlist.wtf
+ On Windows client - install Tailscale and log in
+ Use the Tailscale IP (100.x.x.x) in realmlist.wtf
 
  Remote Access (Internet) - Method 2: SSH Tunnel (Simple)
  From Windows (using PowerShell or WSL):
 ssh -L 3724:localhost:3724 -L 8085:localhost:8085 user@YOUR_ARCH_IP -N
  Set realmlist.wtf to 127.0.0.1
 
-# UNINSTALLING
+ UNINSTALLING
 
-# To completely remove the server:
+ To completely remove the server:
 cd ~/wow/azerothcore-wotlk
 docker compose down -v
 cd ..
 rm -rf azerothcore-wotlk wotlk sql_dumps mysql-data
 
-# Remove Docker (if desired):
+ Remove Docker (if desired):
 sudo pacman -Rns docker docker-compose
 sudo rm -rf /var/lib/docker
 
-# SYSTEM REQUIREMENTS
-# Component   | Minimum    | Recommended
+ SYSTEM REQUIREMENTS
+ Component   | Minimum    | Recommended
  ------------|------------|-------------
  CPU         | 2 cores    | 4+ cores
  RAM         | 8GB        | 16GB+
@@ -290,11 +289,11 @@ sudo rm -rf /var/lib/docker
  The WoW client is property of Blizzard Entertainment and is not included.
 
 
-# CONTRIBUTING
+ CONTRIBUTING
  Issues and pull requests are welcome. Ensure scripts are tested and include 
  error handling.
 
-# SUPPORT
+ SUPPORT
  For AzerothCore specific issues, refer to the official documentation.
  For Playerbots module issues, refer to the module repository.
  For Docker issues, refer to Docker documentation.
