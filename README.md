@@ -36,6 +36,7 @@ is downloaded separately and remains under its original license.
  
  Clone this repository and run the setup script:
 
+```
 git clone https://github.com/ffdiracex/wow.git
 
 cd wow
@@ -43,6 +44,7 @@ cd wow
 chmod +x *.sh
 
 ./setup.sh
+```
 
 ----The setup script will:
    1. Install Docker and dependencies
@@ -59,10 +61,10 @@ SCRIPTS REFERENCE
 - sqldump.sh         - Backup or restore databases
 
 SERVER MANAGEMENT
-
+```
 Starting the Server
 ./start_stop_acore.sh
-
+```
 - Stopping the Server
 ./start_stop_acore.sh
 
