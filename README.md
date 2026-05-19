@@ -43,7 +43,7 @@ cd wow
 
 chmod +x *.sh
 
-./setup.sh
+./_setup.sh
 ```
 
 ----The setup script will:
