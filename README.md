@@ -59,6 +59,7 @@ SCRIPTS REFERENCE
 - start_stop_acore.sh           - Start the server, or stop the server IF running. it will automatically determine.
 - update.sh          - Update AzerothCore and modules
 - sqldump.sh         - Backup or restore databases
+- status.sh          - Dump stats on the docker configuration and fingerprinting (ip address, hostname etc.)
 
 SERVER MANAGEMENT
 ```
@@ -206,93 +207,109 @@ GM COMMANDS
 
  TROUBLESHOOTING
 
- Permission Denied on Docker Socket
- Error: permission denied while trying to connect to the Docker daemon socket
-sudo usermod -aG docker $USER
+--Permission Denied on Docker Socket--
+Error: permission denied while trying to connect to the Docker daemon socket
+```
+sudo usermod -aG docker $USER #add $USER to the docker group, for accessing /var/lib/docker and other important directories.
+```
  Log out and log back in, then retry
 
-Container Stuck in "Restarting" Loop
+-- Container Stuck in "Restarting" Loop --
  Error: cannot attach to a restarting container
-docker logs ac-worldserver --tail 50
-./fix-permissions.sh
-cd azerothcore-wotlk && docker compose down && docker compose up -d
+``` docker logs ac-worldserver --tail 50 && sudo usermod -aG docker $USER ```
+``` cd azerothcore-wotlk && docker compose down && docker compose up -d ```
 
- Missing charsections_dbc Table
+ -- Missing charsections_dbc Table --
  Error: Table 'acore_world.charsections_dbc' doesn't exist
 
-cd azerothcore-wotlk/modules/mod-playerbots
-
+``` cd azerothcore-wotlk/modules/mod-playerbots ```
+```
 wget https://raw.githubusercontent.com/ZhengPeiRu21/mod-playerbots/AzerothCore/sql/world/world_charsections_dbc.sql
 docker exec -i ac-database mysql -uroot -ppassword acore_world < world_charsections_dbc.sql
 docker restart ac-worldserver
+```
 
- Port Already in Use
+ -- Port Already in Use --
  Error: port is already allocated
-sudo ss -tlnp | grep -E '(3724|8085)'
+``` sudo ss -tlnp | grep -E '(3724|8085)' ```
  Stop the conflicting service or change ports in docker-compose.override.yml
 
- Database Connection Failed
+-- Database Connection Failed --
  Error: Could not connect to MySQL database
+ ```
 docker ps | grep ac-database
 docker compose restart ac-database
 sleep 30
+```
 
  Client Cannot Connect - Checklist:
    1. Verify server is running: ./status.sh
    2. Verify realmlist.wtf has correct IP
    3. Test port connectivity from Windows:
-        telnet YOUR_SERVER_IP 3724
+        $telnet YOUR_SERVER_IP 3724
    4. Check Windows Firewall isn't blocking WoW
    5. Verify database realmlist table:
-docker exec -it ac-database mysql -uroot -ppassword -e "SELECT address FROM acore_auth.realmlist;"
+```docker exec -it ac-database mysql -uroot -ppassword -e "SELECT address FROM acore_auth.realmlist;" ```
 
  Out of Memory Errors
+ ```
  Error: Cannot allocate memory or container OOMKilled
-docker stats
+$docker stats
  Reduce bot counts in playerbots.conf:
    AiPlayerbot.MinRandomBots = 100
    AiPlayerbot.MaxRandomBots = 200
 docker restart ac-worldserver
+```
 
- Stale PID File
+ -- Stale PID File --
  Error: Cannot connect to the Docker daemon at unix:///var/run/docker.sock
-sudo rm -f /tmp/docker-compose.pid
-./fix-permissions.sh
+ ```
+sudo rm -f /tmp/docker-compose.pid && sudo usermod -aG docker $USER
+```
 
- Git Nested Repository Warning
+
+-- Git Nested Repository Warning --
  Issue: .git directory exists inside azerothcore-wotlk/ and also in parent directory
+ ```
 echo "azerothcore-wotlk/" >> .gitignore
 git add .gitignore
 git commit -m "Ignore AzerothCore directory"
-
+```
  NETWORK CONFIGURATION
 
  Local Network Only (LAN)
 No port forwarding required. Use the server's local IP from ./status.sh.
 
  Remote Access (Internet) - Method 1: Tailscale VPN (Recommended)
+ ```
 sudo pacman -S tailscale
 sudo systemctl enable tailscaled --now
 sudo tailscale up
  On Windows client - install Tailscale and log in
  Use the Tailscale IP (100.x.x.x) in realmlist.wtf
+```
 
+```
  Remote Access (Internet) - Method 2: SSH Tunnel (Simple)
  From Windows (using PowerShell or WSL):
 ssh -L 3724:localhost:3724 -L 8085:localhost:8085 user@YOUR_ARCH_IP -N
  Set realmlist.wtf to 127.0.0.1
+```
 
  UNINSTALLING
 
  To completely remove the server:
+```
 cd ~/wow/azerothcore-wotlk
 docker compose down -v
 cd ..
 rm -rf azerothcore-wotlk wotlk sql_dumps mysql-data
-
+```
  Remove Docker (if desired):
+ ```
 sudo pacman -Rns docker docker-compose
 sudo rm -rf /var/lib/docker
+```
 
  SYSTEM REQUIREMENTS
  Component   | Minimum    | Recommended
