@@ -1,0 +1,40 @@
+I will set a static IP address for the server computer, here is how I did it.
+
+first identify the NIC:
+
+> ip link show
+
+look for enp0s3 (ethernet) wlp2s0 (wifi)
+
+set local variables to store these for later (export)
+
+export INTERFACE="enp0s3"
+export STATIC_IP="10.0.0.19"      #in my case the address is 10.0.0.19
+export GATEWAY="10.0.0.1"
+export DNS="8.8.8.8"  #let's just stick with google.
+
+
+now we use NetworkManager to set the IP
+
+nmcli connection modify "$INTERFACE" ipv4.method manual
+nmcli connection modify "$INTERFACE" ipv4.address "$STATIC_IP/24"
+nmcli connection modify "$INTERFACE" ipv4.gateway "$GATEWAY"
+nmcli connection modify "$INTERFACE" ipv4.dns "$DNS"
+
+now restart the service
+
+nmcli connection down "$INTERFACE"
+nmcli connection up "$INTERFACE"
+
+OR
+
+sudo systemctl restart NetworkManager.service
+
+
+
+IF you already set an IP address in the realmlist.wtf: change it in the client
+
+AND update the database:
+> docker exec -it ac-database mysql -uroot -ppassword -e "UPDATE acore_auth.realmlist SET address = 'STATIC_IP' WHERE id=1;"
+for me it would be:
+> docker exec -it ac-database mysql -uroot -ppassword -e "UPDATE acore_auth.realmlist SET address = '10.0.0.19' WHERE id=1;"
