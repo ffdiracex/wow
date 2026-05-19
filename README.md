@@ -114,7 +114,7 @@ set realmlist YOUR_SERVER_IP // 192.168.xxx.xxx or 10.0.xxx.xxx or 172.xxx.xxx.x
    5. Save and launch Wow.exe (not the launcher)
 
 - Finding Your Server IP (from Arch server):
-- 
+
 ``` hostname -I | awk '{print $1}' ``` 
    OR
 ```ip addr show ``` and look for wlp2s0 (Wi-Fi) or enp2s0 (ethernet)
