@@ -317,7 +317,7 @@ sudo rm -rf /var/lib/docker
  CPU         | 2 cores    | 4+ cores
  RAM         | 8GB        | 16GB+
  Storage     | 30GB       | 50GB+
- Network     | 100Mbps    | Gigabit
+ Network     | 10Mbps    | 100Mbps
 
  LICENSE
  The scripts in this repository are provided under the MIT License. 
